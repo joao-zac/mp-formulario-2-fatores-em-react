@@ -1,44 +1,30 @@
-# Formulário de Autenticação em 2 fatores - React
+# React + TypeScript + Vite
 
-É crescente o uso de aplicações que implementam algum tipo de segurança adicional na autenticação. Uma das formas mais comuns para isso é utilizando uma estratégia de 2 fatores. Além da senha tradicional, o usuário recebe em seu e-mail ou por SMS uma senha de uso único (também conhecida como OTP - One-Time Password).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🔨 Requisitos
+Currently, two official plugins are available:
 
-- Crie um formulário com 5 campos de entrada, cada um representando um dígito da senha OTP.
-- A submissão desse formulário deverá ocorrer quando o usuário pressionar a tecla Enter ou clicar no botão de submissão.
-- Os campos de entrada só poderão aceitar números, permitindo apenas um único dígito em cada.
-- Ao carregar a página, a aplicação deverá focar no primeiro campo de dígito.
-- Ao digitar no primeiro campo, o foco deve ser transferido automaticamente para o segundo campo, e assim sucessivamente.
-- Se algum dígito for apagado, o foco deve retornar para o dígito anterior.
-- Deve ser possível colar um código de 5 dígitos e ele deve aparecer corretamente nos campos de entrada.
-  - Um erro deve ser exibido quando o texto colado não possuir 5 dígitos numéricos.
-- A navegação entre os campos deve ser possível utilizando as setas do teclado (ArrowLeft e ArrowRight).
-- Em dispositivos móveis, o teclado numérico deve ser ativado (ao invés do teclado tradicional).
-- Utilize, sempre que possível, as boas práticas descritas [nesse artigo](https://web.dev/articles/sms-otp-form?hl=pt-br).  
-- Desenvolva a interface de usuário conforme o modelo do Figma ou, se preferir, crie um design personalizado. 
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 🎨 Design Sugerido
+## Expanding the ESLint configuration
 
-Temos uma sugestão de design no Figma. Entretanto, fique à vontade para montar a aplicação conforme a sua criatividade.
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-### Figma
+- Configure the top-level `parserOptions` property like this:
 
-🔗 [Link do design](https://www.figma.com/community/file/1344076293376163434/mini-projeto-formulario-de-autenticacao-em-2-fatores-otp)
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
+```
 
-## 👉🏽 O que você irá praticar:
-
-#### React
-
-- Refs no React
-- Formulários controlados no React
-- Eventos
-
-#### WebOTP API
-
-- Melhores práticas no uso da WebOTP API
-- Inputs com teclados numéricos
-
-
-## Pré requisitos
-
-Para fazer esse Mini Projeto será necessário no mínimo conhecimento básico de React e de desenvolvimento web no geral.
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
