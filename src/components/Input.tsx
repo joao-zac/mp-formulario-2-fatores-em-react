@@ -1,9 +1,22 @@
-type Props = {
-    valor?: number;
-}
-
-export default function Input({valor}: Props) {
+export default function Input() {
     return(
-        <input type="number" value={valor} className="[appearance:textfield] bg-third-gray mx-2 w-9 py-2 text-center text-3xl font-sansInter text-primary-brown font-medium rounded-md"/>
+        <input 
+        type="text" 
+        inputMode="numeric" 
+        autoComplete="one-time-code" 
+        maxLength={1} 
+        className="
+          bg-third-gray 
+            mx-3 
+            my-10 
+            w-12 
+            py-3 
+            text-center 
+            text-3xl 
+            font-sansInter 
+            text-primary-brown 
+            font-medium 
+            rounded-md
+        "/>
     )
 }
