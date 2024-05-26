@@ -1,64 +1,55 @@
-import { useRef, useEffect } from "react"
+import { useState, ChangeEvent, useRef } from "react"
 
 export default function Form() {
+    const [otp, setOtp] = useState(new Array(5).fill(""))
+    // const otpBoxReference = useRef([]);
 
-    useEffect(() => {
-        inputRefs[0].current?.focus();
-    },[]);
+    function handleChange(e: ChangeEvent<HTMLInputElement>, index: number) {
 
-    const inputRefs = [
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null)
-    ];
+        if(isNaN(Number(e.target.value))) return false;
 
-    const handleInput = (index: number) => {
-        const currentInput = inputRefs[index].current;
-        const nextInput = inputRefs[index + 1]?.current;
-    
-        if (currentInput && currentInput.value.length >= 1) {
-          nextInput?.focus();
+        setOtp([...otp.map((data, i) => (i === index ? e.target.value : data))])
+
+        const next_input = e.currentTarget.nextSibling as HTMLInputElement | null
+        
+        if(next_input && index < 4) {
+            next_input.focus()
         }
-    };
-    
-    const handleBackspace = (event: React.KeyboardEvent, index: number) => {
-        const currentInput = inputRefs[index].current;
-        const nextInput = inputRefs[index + 1]?.current;
-        const prevInput = inputRefs[index - 1]?.current;
-    
-        if (event.key === 'Backspace' && currentInput?.value.length === 0) {
-            prevInput?.focus();
+        
+    }
+
+    function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        const prev_input = e.currentTarget.previousSibling as HTMLInputElement | null
+
+        if (e.key === 'Backspace' && !e.currentTarget.value  && prev_input) {
+            e.preventDefault()
+            prev_input.focus()
+            setOtp(otp.map((data, i) => (i === Array.from(e.currentTarget.parentElement!.children).indexOf(prev_input) ? '' : data)));
         }
-
-        // if (event.key === 'ArrowLeft') {
-        //     prevInput?.focus();
-        // }
-
-        event.key === 'ArrowLeft' ? prevInput?.focus() : event.key === 'ArrowRight' ? nextInput?.focus(): 0;
-    };
-    
+            
+    }
 
     return(
-        <form className="">
+        <form>
+            
+            {
+                otp.map((data, i) => {
+                    return <input
+                        key={i}
+                        required
+                        inputMode="numeric" 
+                        autoComplete="one-time-code"
+                        type="text"
+                        maxLength={1}
+                        value={data}
+                        onChange={(e) => handleChange(e, i)}
+                        onKeyDown={handleKeyDown}
+                        className="bg-third-gray mx-3 my-10 w-12 py-3 text-center text-3xl font-sansInter text-primary-brown font-medium rounded-md" 
+                    />
+                })
+            }
         
-            {inputRefs.map((inputRef, index) => (
-                <input
-                    required
-                    inputMode="numeric" 
-                    autoComplete="one-time-code"
-                    key={index}
-                    type="text"
-                    maxLength={1}
-                    ref={inputRef}
-                    onInput={() => handleInput(index)}
-                    onKeyDown={(event) => handleBackspace(event, index)}
-                    className="bg-third-gray mx-3 my-10 w-12 py-3 text-center text-3xl font-sansInter text-primary-brown font-medium rounded-md" 
-                />
-            ))}
-        
-            <button className="block mx-auto mb-10 bg-primary-blue text-[#FFFF] font-bold text-xl py-4 px-20 rounded-2xl">Verificar OTP</button>
+            <button type="submit" className="block mx-auto mb-10 bg-primary-blue text-[#FFFF] font-bold text-xl py-4 px-20 rounded-2xl">Verificar OTP</button>
 
         </form>
     )
