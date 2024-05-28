@@ -1,8 +1,12 @@
-import { useState, ChangeEvent, useRef } from "react"
+import { useState, ChangeEvent, useRef, useEffect } from "react"
 
 export default function Form() {
     const [otp, setOtp] = useState(new Array(5).fill(""))
-    // const otpBoxReference = useRef([]);
+    const inputref = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        inputref.current?.focus()
+    }, []);
 
     function handleChange(e: ChangeEvent<HTMLInputElement>, index: number) {
 
@@ -12,7 +16,7 @@ export default function Form() {
 
         const next_input = e.currentTarget.nextSibling as HTMLInputElement | null
         
-        if(next_input && index < 4) {
+        if(next_input && index < 4 && e.target.value !== '') {
             next_input.focus()
         }
         
@@ -27,6 +31,10 @@ export default function Form() {
             setOtp(otp.map((data, i) => (i === Array.from(e.currentTarget.parentElement!.children).indexOf(prev_input) ? '' : data)));
         }
             
+    }
+
+    function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
+        e.currentTarget.select()
     }
 
     return(
@@ -44,6 +52,8 @@ export default function Form() {
                         value={data}
                         onChange={(e) => handleChange(e, i)}
                         onKeyDown={handleKeyDown}
+                        onFocus={handleFocus}
+                        ref={i !== 0 ? null : inputref}
                         className="bg-third-gray mx-3 my-10 w-12 py-3 text-center text-3xl font-sansInter text-primary-brown font-medium rounded-md" 
                     />
                 })
