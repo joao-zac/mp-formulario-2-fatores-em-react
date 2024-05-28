@@ -24,17 +24,20 @@ export default function Form() {
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         const prev_input = e.currentTarget.previousSibling as HTMLInputElement | null
+        const next_input = e.currentTarget.nextElementSibling as HTMLInputElement | null
 
         if (e.key === 'Backspace' && !e.currentTarget.value  && prev_input) {
             e.preventDefault()
             prev_input.focus()
             setOtp(otp.map((data, i) => (i === Array.from(e.currentTarget.parentElement!.children).indexOf(prev_input) ? '' : data)));
+        }  else if (e.key === 'ArrowLeft' && prev_input) {
+            e.preventDefault()
+            prev_input.focus();
+        } else if (e.key === 'ArrowRight' && next_input) {
+            e.preventDefault()
+            next_input.focus();
         }
             
-    }
-
-    function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
-        e.currentTarget.select()
     }
 
     return(
@@ -52,7 +55,7 @@ export default function Form() {
                         value={data}
                         onChange={(e) => handleChange(e, i)}
                         onKeyDown={handleKeyDown}
-                        onFocus={handleFocus}
+                        onFocus={(e) => e.currentTarget.select()}
                         ref={i !== 0 ? null : inputref}
                         className="bg-third-gray mx-3 my-10 w-12 py-3 text-center text-3xl font-sansInter text-primary-brown font-medium rounded-md" 
                     />
