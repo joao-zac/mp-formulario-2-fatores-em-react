@@ -40,8 +40,26 @@ export default function Form() {
             
     }
 
+    function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+        e.preventDefault();
+        const pasteData = e.clipboardData.getData('text').slice(0, otp.length).split('');
+
+        if(pasteData.length < 5) {
+            alert("O código não possui 5 Dígitos!")
+            return;
+        }
+        
+        const updatedOtp = otp.map((data, i) => pasteData[i] || data);
+        
+        setOtp(updatedOtp);
+    }
+
+    function handleSubmit() {
+        alert("Parabéns, Você preencheu perfeitamento o formulário!")
+    }
+
     return(
-        <form>
+        <form onSubmit={handleSubmit} >
             
             {
                 otp.map((data, i) => {
@@ -51,12 +69,13 @@ export default function Form() {
                         inputMode="numeric" 
                         autoComplete="one-time-code"
                         type="text"
+                        ref={i !== 0 ? null : inputref}
                         maxLength={1}
                         value={data}
                         onChange={(e) => handleChange(e, i)}
                         onKeyDown={handleKeyDown}
                         onFocus={(e) => e.currentTarget.select()}
-                        ref={i !== 0 ? null : inputref}
+                        onPaste={handlePaste}
                         className="bg-third-gray mx-3 my-10 w-12 py-3 text-center text-3xl font-sansInter text-primary-brown font-medium rounded-md" 
                     />
                 })
